@@ -6,8 +6,8 @@ module SeoAssistant
 		# USAGE:
     #   member = Database::MemberOrm.find(1)
     #   Representer::Member.new(member).to_json
-		class Keyword < Roar::decorator
-			include Roar::json
+		class Keyword < Roar::Decorator
+			include Roar::JSON
 
 			property :word
 			property :eng_word

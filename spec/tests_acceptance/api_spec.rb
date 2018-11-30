@@ -16,7 +16,7 @@ describe 'Test API routes' do
   DatabaseHelper.setup_database_cleaner
 
   before do
-    VcrHelper.configure_vcr_for_github
+    VcrHelper.configure_vcr_for_nl
     DatabaseHelper.wipe_database
   end
 
@@ -34,4 +34,6 @@ describe 'Test API routes' do
       _(body['message']).must_include 'api/v1'
     end
   end
+
+  
 end

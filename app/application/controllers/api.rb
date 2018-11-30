@@ -16,7 +16,8 @@ module SeoAssistant
 			# check API alive
 			# GET /
       routing.root do
-        message = "SeoAssistant API v1 at /api/v1/ in #{Api.environment} mode"
+        #message = "SeoAssistant API v1 at /api/v1/ in #{Api.environment} mode"
+        message = "SeoAssistant API v1 at /api/v1/ "
 
         result_response = Representer::HttpResponse.new(
           Value::Result.new(status: :ok, message: message)

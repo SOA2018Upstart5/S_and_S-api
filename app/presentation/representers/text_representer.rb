@@ -1,13 +1,13 @@
 require 'roar/decorator'
 require 'roar/json'
 
-require_relative 'keyword_representer'
+require_relative 'keyword_representer.rb'
 
 module SeoAssistant
 	module Representer
 	
-		class Text < Roar::decorator
-			include Roar::json
+		class Text < Roar::Decorator
+			include Roar::JSON
 			include Roar::Hypermedia
       include Roar::Decorator::HypermediaConsumer
 
