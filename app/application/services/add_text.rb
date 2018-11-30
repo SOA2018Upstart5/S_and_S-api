@@ -9,20 +9,13 @@ module SeoAssistant
     class AddText
       include Dry::Transaction
 
-      step :validate_input
       step :find_text
       step :store_text
 
       private
 
-      def validate_input(input)
-        if input.success?
-          article = input[:article].to_s
-          Success(text: article)
-        else
-          Failure(input.errors.values.join('; '))
-        end
-      end
+      DB_ERR_MSG = 'Having trobule accessing the database'
+      API_NOT_FOUND_MSG = 'Could not do analysis'
 
       def find_text(input)
         if (text = text_in_database(input))
@@ -32,7 +25,7 @@ module SeoAssistant
         end
         Success(input)
       rescue StandardError => error
-        Failure(error.to_s)
+        Failure(Value::Result.new(status: :not_found, message: :error.to_s))
       end
 
       def store_text(input)
@@ -45,7 +38,7 @@ module SeoAssistant
         Success(text)
       rescue StandardError => error
         puts error.backtrace.join("\n")
-        Failure('Having trouble accessing the database')
+        Failure(Value::Result.new(status: :internal_error, message: DB_ERR_MSG))
       end
 
       # following are support methods that other services could use
@@ -56,7 +49,7 @@ module SeoAssistant
                   .new(JSON.parse(App.config.GOOGLE_CREDS), App.config.UNSPLASH_ACCESS_KEY)
                   .process(input[:text])
       rescue StandardError
-        raise 'Could not do analysis'
+        raise API_NOT_FOUND_MSG
       end
 
       def text_in_database(input)
