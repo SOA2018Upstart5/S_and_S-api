@@ -1,0 +1,7 @@
+config/secrets.yml
+config/*.json
+spec/fixtures/
+coverage/
+*.db
+.pryrc
+.bundle/
