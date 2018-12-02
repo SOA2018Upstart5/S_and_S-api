@@ -10,40 +10,35 @@ module SeoAssistant
     class ShowText
       include Dry::Transaction
 
-			step :validate_article
 			step :decode_article
       step :find_text
 			
 			private
-			def validate_article(input)
-        article_request = input[:article_request].call
-        if article_request.success?
-          Success(input.merge(article: article_request.value!))
-        else
-          Failure(article_request.failure)
-        end
-			end
 			
+			# input => input[:article] = article
 			def decode_article(input)
-				if input[:article].empty?
-					Failure('Nothing pass to this page')
+				article_encoded = input[:article].encode('UTF-8', invalid: :replace, undef: :replace)
+        article_unescaped = URI.unescape(article_encoded).to_s
+				if article_unescaped.empty?
+					Failure(Value::Result.new(status: :no_content, message: 'Nothing pass to this page'))
 				else
-					#article_encoded = input.encode('UTF-8', invalid: :replace, undef: :replace)
-					#article_unescaped = URI.unescape(article_encoded).to_s
-					article_unescaped = input[:article].to_s
-					Success(text: article_unescaped)
+					Success(article_unescaped)
 				end
 			end
 			
 			def find_text(input)
-				text = text_in_database(input)
-        Success(text)
+				text_entity = text_in_database(input)
+				puts "show_text: find_text input = " + input
+				#puts text_entity.text
+        Success(Value::Result.new(status: :ok, message: text_entity))
 			rescue StandardError => error
-				Failure(Value::Result.new(status: :internal_error, message: 'Having trouble accessing the database'))
+				puts "show_text: find_text fail"
+				Failure(Value::Result.new(status: :not_found, message: 'Having trouble accessing the database'))
 			end
 			
 			def text_in_database(input)
-        Repository::For.klass(Entity::Text).find_text(input[:text])
+				puts "show_text: text_in_database" + input
+				Repository::For.klass(Entity::Text).find_text(input)
       end
 			
     end

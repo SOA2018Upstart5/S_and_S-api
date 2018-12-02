@@ -16,7 +16,8 @@ module SeoAssistant
 
       DB_ERR_MSG = 'Having trobule accessing the database'
       API_NOT_FOUND_MSG = 'Could not do analysis'
-
+      
+      # input => input[:text] = article
       def find_text(input)
         if (text = text_in_database(input))
           input[:local_text] = text
@@ -44,7 +45,6 @@ module SeoAssistant
       # following are support methods that other services could use
 
       def text_from_api(input)
-        #Github::ProjectMapper.new(App.config.GITHUB_TOKEN).find(input[:owner_name], input[:project_name])
         OutAPI::TextMapper
                   .new(JSON.parse(App.config.GOOGLE_CREDS), App.config.UNSPLASH_ACCESS_KEY)
                   .process(input[:text])
@@ -53,7 +53,6 @@ module SeoAssistant
       end
 
       def text_in_database(input)
-        #Repository::For.klass(Entity::Project).find_full_name(input[:owner_name], input[:project_name])
         Repository::For.klass(Entity::Text).find_text(input[:text])
       end
     end
