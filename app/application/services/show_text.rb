@@ -22,13 +22,13 @@ module SeoAssistant
 				if article_unescaped.empty?
 					Failure(Value::Result.new(status: :no_content, message: 'Nothing pass to this page'))
 				else
-					Success(article_unescaped)
+					Success(text: article_unescaped)
 				end
 			end
-			
+			# input => input[:text]
 			def find_text(input)
 				text_entity = text_in_database(input)
-				puts "show_text: find_text input = " + input
+				puts "show_text: find_text input = " + input[:text]
 				#puts text_entity.text
         Success(Value::Result.new(status: :ok, message: text_entity))
 			rescue StandardError => error
@@ -37,8 +37,8 @@ module SeoAssistant
 			end
 			
 			def text_in_database(input)
-				puts "show_text: text_in_database" + input
-				Repository::For.klass(Entity::Text).find_text(input)
+				puts "show_text: text_in_database" + input[:text]
+				Repository::For.klass(Entity::Text).find_text(input[:text])
       end
 			
     end
