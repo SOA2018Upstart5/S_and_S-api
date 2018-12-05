@@ -56,11 +56,7 @@ module SeoAssistant
             # Add
             # POST /api/v1/answer/{text}
             routing.post do
-              #decode
-              article_encoded = article.encode('UTF-8', invalid: :replace, undef: :replace)
-              article_unescaped = URI.unescape(article_encoded).to_s
-              puts article_unescaped
-              result = Service::AddText.new.call(text: article_unescaped)
+              result = Service::AddText.new.call(text: article)
 
               if result.failure?
                 failed = Representer::HttpResponse.new(result.failure)
@@ -78,7 +74,7 @@ module SeoAssistant
             # GET /api/v1/answer?article=<user input article here>
             routing.get do
               result = Service::ListTexts.new.call(
-                article_request: Value::ArticlesRequest.new(routing.params)
+                article_request: Value::ListRequestF.new(routing.params)
               )
 
               if result.failure?

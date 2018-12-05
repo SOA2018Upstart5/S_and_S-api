@@ -18,7 +18,7 @@ module SeoAssistant
 			# input => input[:article] = article
 			def decode_article(input)
 				article_encoded = input[:article].encode('UTF-8', invalid: :replace, undef: :replace)
-        article_unescaped = URI.unescape(article_encoded).to_s
+				article_unescaped = URI.unescape(article_encoded).to_s
 				if article_unescaped.empty?
 					Failure(Value::Result.new(status: :no_content, message: 'Nothing pass to this page'))
 				else

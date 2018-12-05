@@ -7,7 +7,7 @@ require 'json'
 module SeoAssistant
   module Value
     # List request parser
-    class ArticlesRequest
+    class ListRequest
       include Dry::Monads::Result::Mixin
 
       def initialize(params)
@@ -16,20 +16,20 @@ module SeoAssistant
 
       # Use in API to parse incoming article requests
       def call
-        articles = JSON.parse(Base64.urlsafe_decode64(@params['articles']))
-        Success(articles)
+        list = JSON.parse(Base64.urlsafe_decode64(@params['list']))
+        Success(list)
       rescue StandardError
         Failure(Value::Result.new(status: :bad_request, message: 'Article list not found'))
       end
 
       # Use in client App to create params to send
-      def self.to_encoded(articles)
+      def self.to_encoded(list)
         Base64.urlsafe_encode64(list.to_json)
       end
 
       # Use in tests to create a ListRequest object from a list
-      def self.to_request(articles)
-        ArticlesRequest.new('articles' => to_encoded(articles))
+      def self.to_request(list)
+        ListRequest.new('articles' => to_encoded(list))
       end
     end
   end

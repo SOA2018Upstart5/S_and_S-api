@@ -19,10 +19,12 @@ module SeoAssistant
       
       # input => input[:text] = article
       def find_text(input)
-        if (text = text_in_database(input))
+        article_encoded = input[:text].encode('UTF-8', invalid: :replace, undef: :replace)
+        article_unescaped = URI.unescape(article_encoded).to_s
+        if (text = text_in_database(article_unescaped))
           input[:local_text] = text
         else
-          input[:remote_text] = text_from_api(input)
+          input[:remote_text] = text_from_api(article_unescaped)
         end
         Success(input)
       rescue StandardError => error
@@ -36,7 +38,7 @@ module SeoAssistant
           else
             input[:local_text]
           end
-        Success(text)
+        Success(Value::Result.new(status: :ok, message: text))
       rescue StandardError => error
         puts error.backtrace.join("\n")
         Failure(Value::Result.new(status: :internal_error, message: DB_ERR_MSG))
