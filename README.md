@@ -29,8 +29,9 @@ Add Text => POST /api/v1/answer/{text}
 Show information of Text => GET /api/v1/answer/{text}
 List Texts => GET /api/v1/answer?article={base64 json array of texts}
 
-SeoAssistant::Repository::Texts.find_text("狗是最好的朋友")
-
+text = SeoAssistant::Repository::Texts.find_text("狗是最好的朋友")
+text = SeoAssistant::Database::TextOrm.all
+text = SeoAssistant::OutAPI::TextMapper.new(JSON.parse(SeoAssistant::Api.config.GOOGLE_CREDS), SeoAssistant::Api.config.UNSPLASH_ACCESS_KEY).process("狗是最好的朋友")
 **Installation**
 ```
 $ bundle install

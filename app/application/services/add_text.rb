@@ -15,16 +15,19 @@ module SeoAssistant
       private
 
       DB_ERR_MSG = 'Having trobule accessing the database'
-      API_NOT_FOUND_MSG = 'Could not do analysis'
+      API_NOT_FOUND_MSG = 'Could not access API'
       
-      # input => input[:text] = article
+      # input => input[:text] = article_code
       def find_text(input)
         article_encoded = input[:text].encode('UTF-8', invalid: :replace, undef: :replace)
         article_unescaped = URI.unescape(article_encoded).to_s
-        if (text = text_in_database(article_unescaped))
+        input[:decode_text] = article_unescaped
+
+        puts "add_text:" + article_unescaped + ";"
+        if (text = text_in_database(input))
           input[:local_text] = text
         else
-          input[:remote_text] = text_from_api(article_unescaped)
+          input[:remote_text] = text_from_api(input)
         end
         Success(input)
       rescue StandardError => error
@@ -47,15 +50,16 @@ module SeoAssistant
       # following are support methods that other services could use
 
       def text_from_api(input)
-        OutAPI::TextMapper
-                  .new(JSON.parse(App.config.GOOGLE_CREDS), App.config.UNSPLASH_ACCESS_KEY)
-                  .process(input[:text])
+        puts "add_text: text_from_api " + input[:decode_text]
+        SeoAssistant::OutAPI::TextMapper
+          .new(JSON.parse(SeoAssistant::Api.config.GOOGLE_CREDS), SeoAssistant::Api.config.UNSPLASH_ACCESS_KEY)
+          .process(input[:decode_text])
       rescue StandardError
         raise API_NOT_FOUND_MSG
       end
 
       def text_in_database(input)
-        Repository::For.klass(Entity::Text).find_text(input[:text])
+        Repository::For.klass(Entity::Text).find_text(input[:decode_text])
       end
     end
   end

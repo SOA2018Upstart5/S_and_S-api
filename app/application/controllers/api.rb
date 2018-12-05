@@ -3,6 +3,7 @@
 require 'roda'
 require 'uri'
 require 'json'
+
 #decode
 #article_encoded = article.encode('UTF-8', invalid: :replace, undef: :replace)
 #article_unescaped = URI.unescape(article_encoded).to_s
@@ -21,8 +22,7 @@ module SeoAssistant
 			# check API alive
 			# GET /
       routing.root do
-        #message = "SeoAssistant API v1 at /api/v1/ in #{Api.environment} mode"
-        message = "SeoAssistant API v1 at /api/v1/"
+        message = "SeoAssistant API v1 at /api/v1/ in #{Api.environment} mode"
 
         result_response = Representer::HttpResponse.new(
           Value::Result.new(status: :ok, message: message)
@@ -44,13 +44,10 @@ module SeoAssistant
               if result.failure?
                 failed = Representer::HttpResponse.new(result.failure)
                 routing.halt failed.http_status_code, failed.to_json
-                puts "api: show text failed"
               end
-              puts "api: show text success"
               http_response = Representer::HttpResponse.new(result.value!)
               response.status = http_response.http_status_code
-              puts "api: result.value!"
-              puts result.value!
+              #puts "api:" + result.value!
               Representer::Text.new(result.value!.message).to_json
             end
             # Add

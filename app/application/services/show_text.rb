@@ -15,7 +15,7 @@ module SeoAssistant
 			
 			private
 			
-			# input => input[:article] = article
+			# input => input[:article] = article_code
 			def decode_article(input)
 				article_encoded = input[:article].encode('UTF-8', invalid: :replace, undef: :replace)
 				article_unescaped = URI.unescape(article_encoded).to_s
@@ -27,13 +27,16 @@ module SeoAssistant
 			end
 			# input => input[:text]
 			def find_text(input)
-				text_entity = text_in_database(input)
-				puts "show_text: find_text input = " + input[:text]
-				#puts text_entity.text
-        Success(Value::Result.new(status: :ok, message: text_entity))
+				if (text_entity = text_in_database(input))
+					#puts "show_text: find_text input = " + input[:text]
+					puts "show_text: find_text text_entity = " + text_entity
+					Success(Value::Result.new(status: :ok, message: text_entity))
+				else
+					Failure(Value::Result.new(status: :not_found, message: "Could not find: #{input[:text]}"))
+				end
 			rescue StandardError => error
 				puts "show_text: find_text fail"
-				Failure(Value::Result.new(status: :not_found, message: 'Having trouble accessing the database'))
+				Failure(Value::Result.new(status: :internal_error, message: 'Having trouble accessing the database'))
 			end
 			
 			def text_in_database(input)
