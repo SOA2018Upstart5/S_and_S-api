@@ -224,7 +224,6 @@ GEM
     ruby_dep (1.5.0)
     ruby_parser (3.12.0)
       sexp_processor (~> 4.9)
-    rubyzip (1.2.2)
     safe_yaml (1.0.4)
     sequel (5.15.0)
     sexp_processor (4.11.0)
@@ -265,9 +264,6 @@ GEM
       coercible (~> 1.0)
       descendants_tracker (~> 0.0, >= 0.0.3)
       equalizer (~> 0.0, >= 0.0.9)
-    watir (6.15.1)
-      regexp_parser (~> 1.2)
-      selenium-webdriver (~> 3.4, >= 3.4.1)
     webmock (3.4.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -288,7 +284,6 @@ DEPENDENCIES
   flog
   google-cloud-language
   google-cloud-translate
-  headless (~> 2.3)
   hirb
   http (~> 3.0)
   minitest (~> 5.11)
@@ -312,7 +307,6 @@ DEPENDENCIES
   travis
   unsplash
   vcr (~> 4.0)
-  watir (~> 6.14)
   webmock (~> 3.4)
 
 RUBY VERSION
