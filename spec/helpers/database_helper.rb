@@ -11,8 +11,8 @@ class DatabaseHelper
   end
 
   def self.wipe_database
-    SeoAssistant::App.DB.run('PRAGMA foreign_keys = OFF')
+    SeoAssistant::Api.DB.run('PRAGMA foreign_keys = OFF')
     DatabaseCleaner.clean
-    SeoAssistant::App.DB.run('PRAGMA foreign_keys = ON')
+    SeoAssistant::Api.DB.run('PRAGMA foreign_keys = ON')
   end
 end

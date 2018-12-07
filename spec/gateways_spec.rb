@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'spec_helper.rb'
+require_relative 'helpers/spec_helper.rb'
 require_relative 'helpers/vcr_helper.rb'
 
 describe 'Tests NL API library' do
