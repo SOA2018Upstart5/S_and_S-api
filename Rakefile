@@ -12,6 +12,13 @@ Rake::TestTask.new(:spec) do |t|
   t.warning = false
 end
 
+desc 'Run acceptance tests'
+# NOTE: run `rake run:test` in another process
+Rake::TestTask.new(:spec_accept) do |t|
+  t.pattern = 'spec/tests_acceptance/*_spec.rb'
+  t.warning = false
+end
+
 desc 'Keep rerunning tests upon changes'
 task :respec do
   sh "rerun -c 'rake spec' --ignore 'coverage/*'"
@@ -27,6 +34,12 @@ task :google_creds do
   puts File.read('config/google_credential.json').split("\n").join(' ')
 end
 
+desc 'encode the text into uri.code'
+task :escape do 
+  require 'uri'
+  text = "狗是最好的朋友"
+  puts URI.escape(text)
+end
 
 namespace :db do
   task :config do

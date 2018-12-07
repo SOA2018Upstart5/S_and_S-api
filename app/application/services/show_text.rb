@@ -14,26 +14,32 @@ module SeoAssistant
       step :find_text
 			
 			private
-
+			
+			# input => input[:article] = article_code
 			def decode_article(input)
-				if input.empty?
-					Failure('Nothing pass to this page')
+				article_encoded = input[:article].encode('UTF-8', invalid: :replace, undef: :replace)
+				article_unescaped = URI.unescape(article_encoded).to_s
+				if article_unescaped.empty?
+					Failure(Value::Result.new(status: :no_content, message: 'Nothing pass to this page'))
 				else
-					article_encoded = input.encode('UTF-8', invalid: :replace, undef: :replace)
-					article_unescaped = URI.unescape(article_encoded).to_s
 					Success(text: article_unescaped)
 				end
 			end
-			
+			# input => input[:text]
 			def find_text(input)
-				text = text_in_database(input)
-        Success(text)
-      rescue StandardError => error
-        Failure('Having trouble accessing the database')
+				text_entity = text_in_database(input)
+				
+				if text_entity
+					Success(Value::Result.new(status: :ok, message: text_entity))
+				else
+					Failure(Value::Result.new(status: :not_found, message: "Could not find: #{input[:text]}"))
+				end
+			rescue StandardError => error
+				Failure(Value::Result.new(status: :internal_error, message: 'Having trouble accessing the database'))
 			end
 			
 			def text_in_database(input)
-        Repository::For.klass(Entity::Text).find_text(input[:text])
+				Repository::For.klass(Entity::Text).find_text(input[:text])
       end
 			
     end

@@ -3,10 +3,13 @@ development:
   # Infrastructure
   DB_FILENAME: app/infrastructure/database/local/dev.db
   # Application
-  APP_HOST: http://localhost:9000
+  API_HOST: http://localhost:9000
   
 test:
   # Infrastructure
   DB_FILENAME: app/infrastructure/database/local/test.db
   # Application
-  APP_HOST: http://localhost:9000
+  API_HOST: http://localhost:9000
+
+production:
+  API_HOST: https://S_and_S-api.herokuapp.com

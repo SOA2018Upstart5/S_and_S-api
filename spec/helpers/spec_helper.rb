@@ -12,16 +12,23 @@ require 'minitest/rg'
 
 require 'pry' # for debugging
 
-require_relative '../init.rb'
+require_relative '../../init.rb'
 
-SCRIPT = '狗是我們的好朋友'.freeze
-KEYWORD = 'dog'
+SCRIPT_CODE = '%E7%8B%97%E6%98%AF%E6%9C%80%E5%A5%BD%E7%9A%84%E6%9C%8B%E5%8F%8B'.freeze
+SCRIPT = '狗是最好的朋友'.freeze
 
-UNSPLASH_ACCESS_KEY = SeoAssistant::App.config.UNSPLASH_ACCESS_KEY
-GOOGLE_CREDS = JSON.parse(SeoAssistant::App.config.GOOGLE_CREDS)
-CORRECT = YAML.safe_load(File.read('spec/fixtures/api_result.yml'))
+ERROR_SCRIPT_CODE = '%E8%B2%93%E6%98%AF%E6%9C%80%E5%A5%BD%E7%9A%84%E6%9C%8B%E5%8F%8B'.freeze
+ERROR_SCRIPT = '貓是最好的朋友'.freeze
+
+KEYWORD = '狗'
+
+NON_ACCESS_CODE = '%E6%93%9A%E8%BD%89%E8%BF%B0%EF%BC%8C%E5%85%A9%E4%BA%BA%E5%BE%9E%E4%B8%8B%E5%8D%88%E5%9B%9B%E6%99%82%E5%8D%85%E5%88%86%E9%80%B2%E8%A1%8C%E9%96%89%E9%96%80%E6%9C%83%E8%AB%87%EF%BC%8C%E7%B4%84%E8%81%8A%E4%BA%86%E5%9B%9B%E5%8D%81%E5%88%86%E9%90%98%E3%80%82%E7%8E%8B%E9%87%91%E5%B9%B3%E8%A1%A8%E7%A4%BA%EF%BC%8C%E9%99%B3%E8%8F%8A%E5%88%B0%E8%A8%AA%E7%B4%94%E5%B1%AC%E7%A6%AE%E8%B2%8C%E6%80%A7%E6%8B%9C%E6%9C%83%EF%BC%8C%E5%85%A9%E4%BA%BA%E3%80%8C%E9%96%92%E8%A9%B1%E5%AE%B6%E5%B8%B8%E3%80%8D%EF%BC%8C%E4%B8%A6%E6%9C%AA%E6%8F%90%E5%8F%8A%E9%AB%98%E9%9B%84%E9%81%B8%E8%88%89%E3%80%82%E8%87%B3%E6%96%BC%E6%98%AF%E5%90%A6%E8%A7%B8%E5%8F%8A%E5%85%A7%E9%96%A3%E6%94%B9%E7%B5%84%E3%80%81%E6%B0%91%E9%80%B2%E9%BB%A8%E4%B8%BB%E5%B8%AD%E6%94%B9%E9%81%B8%E7%AD%89%E8%AD%B0%E9%A1%8C%EF%BC%8C%E7%8E%8B%E9%87%91%E5%B9%B3%E5%83%85%E4%BD%8E%E8%AA%BF%E8%A1%A8%E7%A4%BA%EF%BC%8C%E9%82%A3%E6%98%AF%E4%BA%BA%E5%AE%B6%E7%9A%84%E4%BA%8B%E3%80%82'.freeze
+
+UNSPLASH_ACCESS_KEY = SeoAssistant::Api.config.UNSPLASH_ACCESS_KEY
+GOOGLE_CREDS = JSON.parse(SeoAssistant::Api.config.GOOGLE_CREDS)
+#CORRECT = YAML.safe_load(File.read('spec/fixtures/api_result.yml'))
 
 # Helper methods
 def homepage
-  SeoAssistant::App.config.APP_HOST
+  SeoAssistant::Api.config.APP_HOST
 end

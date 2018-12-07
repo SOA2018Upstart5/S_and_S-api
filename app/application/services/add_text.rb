@@ -9,22 +9,20 @@ module SeoAssistant
     class AddText
       include Dry::Transaction
 
-      step :validate_input
       step :find_text
       step :store_text
 
       private
 
-      def validate_input(input)
-        if input.success?
-          article = input[:article].to_s
-          Success(text: article)
-        else
-          Failure(input.errors.values.join('; '))
-        end
-      end
-
+      DB_ERR_MSG = 'Having trobule accessing the database'
+      API_NOT_FOUND_MSG = 'Could not access API'
+      
+      # input => input[:text] = article_code
       def find_text(input)
+        article_encoded = input[:text].encode('UTF-8', invalid: :replace, undef: :replace)
+        article_unescaped = URI.unescape(article_encoded).to_s
+        input[:decode_text] = article_unescaped
+
         if (text = text_in_database(input))
           input[:local_text] = text
         else
@@ -32,7 +30,7 @@ module SeoAssistant
         end
         Success(input)
       rescue StandardError => error
-        Failure(error.to_s)
+        Failure(Value::Result.new(status: :not_found, message: error.to_s))
       end
 
       def store_text(input)
@@ -42,26 +40,24 @@ module SeoAssistant
           else
             input[:local_text]
           end
-        Success(text)
+        Success(Value::Result.new(status: :created, message: text))
       rescue StandardError => error
         puts error.backtrace.join("\n")
-        Failure('Having trouble accessing the database')
+        Failure(Value::Result.new(status: :internal_error, message: DB_ERR_MSG))
       end
 
       # following are support methods that other services could use
 
       def text_from_api(input)
-        #Github::ProjectMapper.new(App.config.GITHUB_TOKEN).find(input[:owner_name], input[:project_name])
         OutAPI::TextMapper
-                  .new(JSON.parse(App.config.GOOGLE_CREDS), App.config.UNSPLASH_ACCESS_KEY)
-                  .process(input[:text])
+          .new(JSON.parse(Api.config.GOOGLE_CREDS), Api.config.UNSPLASH_ACCESS_KEY)
+          .process(input[:decode_text])
       rescue StandardError
-        raise 'Could not do analysis'
+        raise API_NOT_FOUND_MSG
       end
 
       def text_in_database(input)
-        #Repository::For.klass(Entity::Project).find_full_name(input[:owner_name], input[:project_name])
-        Repository::For.klass(Entity::Text).find_text(input[:text])
+        Repository::For.klass(SeoAssistant::Entity::Text).find_text(input[:decode_text])
       end
     end
   end
