@@ -34,6 +34,12 @@ task :google_creds do
   puts File.read('config/google_credential.json').split("\n").join(' ')
 end
 
+desc 'encode the text into uri.code'
+task :escape do 
+  require 'uri'
+  text = "狗是最好的朋友"
+  puts URI.escape(text)
+end
 
 namespace :db do
   task :config do

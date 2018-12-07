@@ -23,7 +23,6 @@ module SeoAssistant
         article_unescaped = URI.unescape(article_encoded).to_s
         input[:decode_text] = article_unescaped
 
-        puts "add_text:" + article_unescaped + ";"
         if (text = text_in_database(input))
           input[:local_text] = text
         else
@@ -31,7 +30,7 @@ module SeoAssistant
         end
         Success(input)
       rescue StandardError => error
-        Failure(Value::Result.new(status: :not_found, message: :error.to_s))
+        Failure(Value::Result.new(status: :not_found, message: error.to_s))
       end
 
       def store_text(input)
@@ -41,7 +40,7 @@ module SeoAssistant
           else
             input[:local_text]
           end
-        Success(Value::Result.new(status: :ok, message: text))
+        Success(Value::Result.new(status: :created, message: text))
       rescue StandardError => error
         puts error.backtrace.join("\n")
         Failure(Value::Result.new(status: :internal_error, message: DB_ERR_MSG))
@@ -50,16 +49,15 @@ module SeoAssistant
       # following are support methods that other services could use
 
       def text_from_api(input)
-        puts "add_text: text_from_api " + input[:decode_text]
-        SeoAssistant::OutAPI::TextMapper
-          .new(JSON.parse(SeoAssistant::Api.config.GOOGLE_CREDS), SeoAssistant::Api.config.UNSPLASH_ACCESS_KEY)
+        OutAPI::TextMapper
+          .new(JSON.parse(Api.config.GOOGLE_CREDS), Api.config.UNSPLASH_ACCESS_KEY)
           .process(input[:decode_text])
       rescue StandardError
         raise API_NOT_FOUND_MSG
       end
 
       def text_in_database(input)
-        Repository::For.klass(Entity::Text).find_text(input[:decode_text])
+        Repository::For.klass(SeoAssistant::Entity::Text).find_text(input[:decode_text])
       end
     end
   end

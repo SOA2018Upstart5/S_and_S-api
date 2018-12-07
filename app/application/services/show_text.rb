@@ -27,20 +27,18 @@ module SeoAssistant
 			end
 			# input => input[:text]
 			def find_text(input)
-				if (text_entity = text_in_database(input))
-					#puts "show_text: find_text input = " + input[:text]
-					puts "show_text: find_text text_entity = " + text_entity
+				text_entity = text_in_database(input)
+				
+				if text_entity
 					Success(Value::Result.new(status: :ok, message: text_entity))
 				else
 					Failure(Value::Result.new(status: :not_found, message: "Could not find: #{input[:text]}"))
 				end
 			rescue StandardError => error
-				puts "show_text: find_text fail"
 				Failure(Value::Result.new(status: :internal_error, message: 'Having trouble accessing the database'))
 			end
 			
 			def text_in_database(input)
-				puts "show_text: text_in_database" + input[:text]
 				Repository::For.klass(Entity::Text).find_text(input[:text])
       end
 			

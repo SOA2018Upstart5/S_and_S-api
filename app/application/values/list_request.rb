@@ -29,7 +29,7 @@ module SeoAssistant
 
       # Use in tests to create a ListRequest object from a list
       def self.to_request(list)
-        ListRequest.new('articles' => to_encoded(list))
+        ListRequest.new('list' => to_encoded(list))
       end
     end
   end

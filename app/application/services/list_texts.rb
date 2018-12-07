@@ -9,20 +9,20 @@ module SeoAssistant
       include Dry::Transaction
 
       step :validate_list
-      step :call
+      step :retrieve_texts
 
       private
 
       def validate_list(input)
-        articles_request = input[:articles_request].call
-        if articles_request.success?
-          Success(input.merge(list: articles_request.value!))
+        texts_request = input[:texts_request].call
+        if texts_request.success?
+          Success(input.merge(list: texts_request.value!))
         else
-          Failure(article_request.failure)
+          Failure(texts_request.failure)
         end
       end
 
-      def call(input)
+      def retrieve_texts(input)
         Repository::For.klass(Entity::Text).find_texts(input[:list])
           .yield_self { |texts| Value::TextsList.new(texts) }
           .yield_self do |list|

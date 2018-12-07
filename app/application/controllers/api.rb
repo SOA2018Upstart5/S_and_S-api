@@ -71,7 +71,7 @@ module SeoAssistant
             # GET /api/v1/answer?article=<user input article here>
             routing.get do
               result = Service::ListTexts.new.call(
-                article_request: Value::ListRequestF.new(routing.params)
+                texts_request: Value::ListRequest.new(routing.params)
               )
 
               if result.failure?
@@ -81,7 +81,7 @@ module SeoAssistant
 
               http_response = Representer::HttpResponse.new(result.value!)
               response.status = http_response.http_status_code
-              Representer::Text.new(result.value!.message).to_json
+              Representer::TextsList.new(result.value!.message).to_json
             end
           end
         end
