@@ -45,14 +45,14 @@ namespace :db do
   task :config do
     require 'sequel'
     require_relative 'config/environment.rb' # load config info
-    def app; SeoAssistant::App; end
+    def api; SeoAssistant::Api; end
   end
 
   desc 'Run migrations'
   task :migrate => :config do
     Sequel.extension :migration
-    puts "Migrating #{app.environment} database to latest"
-    Sequel::Migrator.run(app.DB, 'app/infrastructure/database/migrations')
+    puts "Migrating #{api.environment} database to latest"
+    Sequel::Migrator.run(api.DB, 'app/infrastructure/database/migrations')
   end
 
   desc 'Wipe records from all tables'
