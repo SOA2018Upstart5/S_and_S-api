@@ -25,7 +25,7 @@ Here are the links of APIs we use:
 
 **Service**
 | Service                  | Verb | Route                                               |
-| :---------------------:  |:----:| ---------------------------------------------------:|
+| :----------------------- |:----:| ---------------------------------------------------:|
 | Check API alive          | GET  | /                                                   |
 | Add Text                 | POST | /api/v1/answer/{text}                               |
 | Show information of Text | GET  | /api/v1/answer/{text}                               |
