@@ -26,13 +26,11 @@ Here are the links of APIs we use:
 **Service**
 
 | Service                  | Verb | Route                                                |
-| :----------------------: | :---:| :--------------------------------------------------: |
+| :----------------------- | :---:| :--------------------------------------------------- |
 | Check API alive          | GET  | /                                                    |
 | Add Text                 | POST | /api/v1/answer/{text}                                |
 | Show information of Text | GET  | /api/v1/answer/{text}                                |
 | List Texts               | GET  | /api/v1/answer?article={base64 json array of texts}  |
-
-| :------------ |:---------------:| -----:|
 
 **Installation**
 ```
