@@ -14,6 +14,7 @@ module SeoAssistant
 
     plugin :halt
     plugin :all_verbs
+    plugin :caching
     use Rack::MethodOverride
 
     route do |routing|
