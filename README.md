@@ -47,5 +47,17 @@ $ RACK_ENV=test rake db:migrate
 
 **Test API alive**
 ```
-$ http https://sands-seoassistant-api.herokuapp.com/
+$ http http://localhost:9292/api/v1/answer/%E7%8B%97%E6%98%AF%E6%9C%80%E5%A5%BD%E7%9A%84%E6%9C%8B%E5%8F%8B
+
+$ http https://sands-seoassistant-api.herokuapp.com/api/v1/answer/%E7%8B%97%E6%98%AF%E6%9C%80%E5%A5%BD%E7%9A%84%E6%9C%8B%E5%8F%8B
+```
+
+**Push to heroku**
+```
+$ bundle install --without production
+$ git push heroku master
+$ heroku restart
+
+# check the state of application
+$ heroku ps 
 ```
