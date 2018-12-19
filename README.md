@@ -36,13 +36,16 @@ Here are the links of APIs we use:
 ```
 $ bundle install -- without production
 ```
-
-**Create databes**
+**databes**
+***Create databes***
 ```
-$ rake db:wipe
 $ rake db:migrate
 or
 $ RACK_ENV=test rake db:migrate
+```
+***Clear databes***
+```
+$ rake db:wipe
 ```
 
 **Test API alive**
