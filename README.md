@@ -48,6 +48,11 @@ $ RACK_ENV=test rake db:migrate
 $ rake db:wipe
 ```
 
+***Run local servies***
+```
+$ puma config.ru -p 9292
+```
+
 **Test API alive**
 ```
 $ http http://localhost:9292/api/v1/answer/%E7%8B%97%E6%98%AF%E6%9C%80%E5%A5%BD%E7%9A%84%E6%9C%8B%E5%8F%8B
