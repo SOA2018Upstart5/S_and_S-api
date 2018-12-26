@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+require 'rack/cache'
 require 'roda'
 require 'yaml'
 require 'econfig'
@@ -27,19 +30,19 @@ module SeoAssistant
     end
 
     configure :development do
-      # use Rack::Cache,
-      #     verbose: true,
-      #     metastore: 'file:_cache/rack/meta',
-      #     entitystore: 'file:_cache/rack/body'
+      use Rack::Cache,
+          verbose: true,
+          metastore: 'file:_cache/rack/meta',
+          entitystore: 'file:_cache/rack/body'
     end
 
     configure :production do
       # Use deployment platform's DATABASE_URL environment variable
 
-      # use Rack::Cache,
-      #     verbose: true,
-      #     metastore: config.REDISCLOUD_URL + '/0/metastore',
-      #     entitystore: config.REDISCLOUD_URL + '/0/entitystore'
+      use Rack::Cache,
+          verbose: true,
+          metastore: config.REDISCLOUD_URL + '/0/metastore',
+          entitystore: config.REDISCLOUD_URL + '/0/entitystore'
     end
 
     configure do

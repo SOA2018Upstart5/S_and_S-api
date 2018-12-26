@@ -63,6 +63,7 @@ $ http https://sands-seoassistant-api.herokuapp.com/api/v1/answer/%E7%8B%97%E6%9
 **Push to heroku**
 ```
 $ bundle install --without production
+# commit to github first
 $ git push heroku master
 $ heroku restart
 
