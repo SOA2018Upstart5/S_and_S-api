@@ -41,6 +41,13 @@ task :escape do
   puts URI.escape(text)
 end
 
+desc 'encode the text into uri.code'
+task :unescape do 
+  require 'uri'
+  text = "%E7%83%8F%E9%BE%9C%E6%89%8D%E6%98%AF%E4%BA%BA%E9%A1%9E%E7%9A%84%E5%A5%BD%E6%9C%8B%E5%8F%8B"
+  puts URI.unescape(text).to_s
+end
+
 namespace :db do
   task :config do
     require 'sequel'

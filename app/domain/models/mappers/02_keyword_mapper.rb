@@ -30,24 +30,28 @@ module SeoAssistant
         end
 
         def build_entity()
+          replace_s = @eng_word.gsub(/\s/,",")
+          process = SeoAssistant::OutAPI::Unsplash.new(@unsplash_key, replace_s).process
+          results = process['results']
+
           SeoAssistant::Entity::Keyword.new(
             id: nil,
             word: @word,
             eng_word: @eng_word,
             type: @type,
             importance: @importance,
-            url: url()
+            url: url(results)
           )
         end
 
-        def url()
-          process = SeoAssistant::OutAPI::Unsplash.new(@unsplash_key, @eng_word).process
-          results = process['results']
-          
-          show_num = results.length
+        def url(results)
           url_arr = []
-          results.map do |result|
-            url_arr.push(result['urls']['raw'].to_s)
+          if results == []
+            url_arr.push("https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png")
+          else
+            results.map do |result|
+              url_arr.push(result['urls']['raw'].to_s)
+            end
           end
           url_arr.join('\n')
         end
