@@ -44,11 +44,7 @@ end
 desc 'encode the text into uri.code'
 task :unescape do 
   require 'uri'
-<<<<<<< HEAD
-  text = "%E7%8B%97%E6%98%AF%E6%9C%80%E5%A5%BD%E7%9A%84%E6%9C%8B%E5%8F%8B"
-=======
   text = "%E7%83%8F%E9%BE%9C%E6%89%8D%E6%98%AF%E4%BA%BA%E9%A1%9E%E7%9A%84%E5%A5%BD%E6%9C%8B%E5%8F%8B"
->>>>>>> parent of 9cfec9d... Update rackfile
   puts URI.unescape(text).to_s
 end
 
