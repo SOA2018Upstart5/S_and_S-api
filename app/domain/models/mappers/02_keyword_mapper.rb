@@ -1,4 +1,5 @@
 #require_relative '03_url_mapper.rb'
+#require 'concurrent'
 
 module SeoAssistant
   module OutAPI
@@ -12,6 +13,11 @@ module SeoAssistant
         results.map do |each_result|
           KeywordMapper.build_entity(@google_config, @unsplash_key, each_result)
         end
+        # results.map do |each_result|
+        #   Concurrent::Promise
+        #     .new{KeywordMapper.build_entity(@google_config, @unsplash_key, each_result)}
+        #     .execute
+        # end.map(&:value)
       end
 
       def self.build_entity(google_config, unsplash_access_key, each_result)
