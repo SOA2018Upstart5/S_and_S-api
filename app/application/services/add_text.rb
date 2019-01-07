@@ -1,11 +1,9 @@
 # frozen_string_literal: true
-#not finished
 
 require 'dry/transaction'
 
 module SeoAssistant
   module Service
-    # Transaction to store project from Github API to database
     class AddText
       include Dry::Transaction
 
@@ -17,7 +15,18 @@ module SeoAssistant
       DB_ERR_MSG = 'Having trobule accessing the database'
       API_NOT_FOUND_MSG = 'Could not access API'
 
-      # input => input[:text] = article_code
+      def store_text(input)
+        text =
+          if (new_text = input[:remote_text])
+            Repository::For.entity(new_text).create(new_text)
+          else
+            input[:local_text]
+          end
+        Success(Value::Result.new(status: :created, message: text))
+      rescue StandardError => error
+        puts error.backtrace.join("\n")
+        Failure(Value::Result.new(status: :internal_error, message: DB_ERR_MSG))
+      end
 
       def find_text(input)
         article_encoded = input[:text].encode('UTF-8', invalid: :replace, undef: :replace)
@@ -34,21 +43,12 @@ module SeoAssistant
         Failure(Value::Result.new(status: :not_found, message: error.to_s))
       end
 
-      def store_text(input)
-        text =
-          if (new_text = input[:remote_text])
-            Repository::For.entity(new_text).create(new_text)
-          else
-            input[:local_text]
-          end
-        Success(Value::Result.new(status: :created, message: text))
-      rescue StandardError => error
-        puts error.backtrace.join("\n")
-        Failure(Value::Result.new(status: :internal_error, message: DB_ERR_MSG))
-      end
-
       # following are support methods that other services could use
 
+      def text_in_database(input)
+        Repository::For.klass(SeoAssistant::Entity::Text).find_text(input[:decode_text])
+      end
+      
       def text_from_api(input)
         OutAPI::TextMapper
           .new(JSON.parse(Api.config.GOOGLE_CREDS), Api.config.UNSPLASH_ACCESS_KEY)
@@ -57,9 +57,6 @@ module SeoAssistant
         raise API_NOT_FOUND_MSG
       end
 
-      def text_in_database(input)
-        Repository::For.klass(SeoAssistant::Entity::Text).find_text(input[:decode_text])
-      end
     end
   end
 end

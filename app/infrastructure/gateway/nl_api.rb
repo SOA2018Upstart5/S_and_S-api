@@ -5,6 +5,7 @@ require 'google/cloud/language'
 module SeoAssistant
   module OutAPI
     class Analyze
+      
       def initialize(google_config, text_str)
         @google_cred = google_config
         @text_content = text_str
@@ -17,6 +18,7 @@ module SeoAssistant
         response = language.analyze_entities content: @text_content, type: :PLAIN_TEXT
         entities = response.entities
       end
+
     end
   end
 end

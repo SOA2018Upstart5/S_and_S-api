@@ -15,7 +15,6 @@ module SeoAssistant
 
 			private
 
-			# input => input[:article] = article_code
 			def decode_article(input)
 				article_encoded = input[:article].encode('UTF-8', invalid: :replace, undef: :replace)
 				article_unescaped = URI.unescape(article_encoded).to_s
@@ -25,7 +24,11 @@ module SeoAssistant
 					Success(text: article_unescaped)
 				end
 			end
-			# input => input[:text]
+
+			def text_in_database(input)
+				Repository::For.klass(Entity::Text).find_text(input[:text])
+			end
+
 			def find_text(input)
 				text_entity = text_in_database(input)
 
@@ -36,10 +39,6 @@ module SeoAssistant
 				end
 			rescue StandardError => error
 				Failure(Value::Result.new(status: :internal_error, message: 'Having trouble accessing the database'))
-			end
-
-			def text_in_database(input)
-				Repository::For.klass(Entity::Text).find_text(input[:text])
 			end
 
     end
