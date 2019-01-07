@@ -1,5 +1,3 @@
-#require_relative '03_url.rb'
-
 module SeoAssistant
   module Entity
     class Keyword < Dry::Struct
