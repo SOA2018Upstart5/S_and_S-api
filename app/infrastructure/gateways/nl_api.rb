@@ -4,7 +4,6 @@ require 'google/cloud/language'
 
 module SeoAssistant
   module OutAPI
-    #Library for Google Cloud Natural Language API
     class Analyze
       def initialize(google_config, text_str)
         @google_cred = google_config

@@ -22,16 +22,16 @@ module SeoAssistant
         end
       end
 
-      def retrieve_texts(input)
-        Repository::For.klass(Entity::Text).find_texts(input[:list])
-          .yield_self { |texts| Value::TextsList.new(texts) }
-          .yield_self do |list|
-            Success(Value::Result.new(status: :ok, message: list))
-          end
-        
-      rescue StandardError
-        Failure(Value::Result.new(status: :internal_error, message: 'Cannot access database'))
-      end
+    def retrieve_texts(input)
+      Repository::For.klass(Entity::Text).find_texts(input[:list])
+        .yield_self { |texts| Value::TextsList.new(texts) }
+        .yield_self do |list|
+          Success(Value::Result.new(status: :ok, message: list))
+        end
+
+    rescue StandardError
+      Failure(Value::Result.new(status: :internal_error, message: 'Cannot access database'))
+    end
     end
   end
 end

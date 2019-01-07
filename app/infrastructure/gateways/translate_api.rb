@@ -4,7 +4,6 @@ require 'google/cloud/translate'
 
 module SeoAssistant
   module OutAPI
-    # Library of Google Translate API
     class Translate
       def initialize(google_config, chinese_str)
         @google_cred = google_config
@@ -14,7 +13,6 @@ module SeoAssistant
       end
 
       def process
-
         translate = Google::Cloud::Translate.new(
           project_id: @project_id,
           credentials: @google_cred
@@ -22,6 +20,7 @@ module SeoAssistant
         translation = translate.translate @text, to: @target
         translation.to_s
       end
+
     end
   end
 end

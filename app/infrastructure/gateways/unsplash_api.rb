@@ -4,7 +4,6 @@ require 'http'
 
 module SeoAssistant
   module OutAPI
-    # Library of Unsplash API
     class Unsplash
       def initialize(unsplash_access_key, keyword_str)
         @access_key = unsplash_access_key
@@ -21,6 +20,7 @@ module SeoAssistant
         path = 'https://api.unsplash.com/' + '/search/photos?query=' + @query
         pictures_data = get(path).parse
       end
+
     end
   end
 end
