@@ -25,10 +25,6 @@ module SeoAssistant
 				end
 			end
 
-			def text_in_database(input)
-				Repository::For.klass(Entity::Text).find_text(input[:text])
-			end
-
 			def find_text(input)
 				text_entity = text_in_database(input)
 
@@ -41,6 +37,10 @@ module SeoAssistant
 				Failure(Value::Result.new(status: :internal_error, message: 'Having trouble accessing the database'))
 			end
 
+			def text_in_database(input)
+				Repository::For.klass(Entity::Text).find_text(input[:text])
+			end
+			
     end
 	end
 end

@@ -13,7 +13,14 @@ module SeoAssistant
 
       private
 
-
+      def validate_list(input)
+        texts_request = input[:texts_request].call
+        if texts_request.success?
+          Success(input.merge(list: texts_request.value!))
+        else
+          Failure(texts_request.failure)
+        end
+      end
 
       def retrieve_texts(input)
         Repository::For.klass(Entity::Text).find_texts(input[:list])
@@ -26,15 +33,6 @@ module SeoAssistant
         Failure(Value::Result.new(status: :internal_error, message: 'Cannot access database'))
       end
 
-      def validate_list(input)
-        texts_request = input[:texts_request].call
-        if texts_request.success?
-          Success(input.merge(list: texts_request.value!))
-        else
-          Failure(texts_request.failure)
-        end
-      end
-      
     end
   end
 end
