@@ -21,4 +21,3 @@ module SeoAssistant
     end
   end
 end
-

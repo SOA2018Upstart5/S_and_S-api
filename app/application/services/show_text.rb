@@ -40,7 +40,7 @@ module SeoAssistant
 
 			def text_in_database(input)
 				Repository::For.klass(Entity::Text).find_text(input[:text])
-      end
+			end
 
     end
 	end

@@ -18,6 +18,7 @@ module SeoAssistant
       API_NOT_FOUND_MSG = 'Could not access API'
 
       # input => input[:text] = article_code
+
       def find_text(input)
         article_encoded = input[:text].encode('UTF-8', invalid: :replace, undef: :replace)
         article_unescaped = URI.unescape(article_encoded).to_s
