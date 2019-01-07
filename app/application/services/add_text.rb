@@ -16,7 +16,7 @@ module SeoAssistant
 
       DB_ERR_MSG = 'Having trobule accessing the database'
       API_NOT_FOUND_MSG = 'Could not access API'
-      
+
       # input => input[:text] = article_code
       def find_text(input)
         article_encoded = input[:text].encode('UTF-8', invalid: :replace, undef: :replace)
